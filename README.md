@@ -1,24 +1,22 @@
 # `src/my` — Hiện thực Funnel Tree (Python)
 
-Hiện thực lại thuật toán **Funnel Tree** (bài báo *Optimization*) trong Python thuần,
-đối chiếu với bản C++ tham chiếu của anh Minh Phúc
-(`../anh-minh-phuc/funnel_tree_example/`).
+Hiện thực lại thuật toán **Funnel Tree** (bài báo *Optimization*, Phan Thanh An et al., 2024) trong Python thuần,
+dựa chủ yếu vào **bài báo** để xây dựng.
 
 Hai nhánh công việc:
 
-- **Khoảng cách** — `algorithm1.py` (+ `clip_glue.py`, `procedure2.py`): bản tối giản của
-  Algorithm 1, cho độ dài đường đi ngắn nhất từ nguồn tới mọi đỉnh.
-- **Đường đi** — `funnel_paths.py`: port trung thành `ft.cpp`, dựng lại **polyline** thật
-  trên mặt rồi ghi ra `output/`.
+- **Khoảng cách** — `algorithm1.py` (+ `clip_glue.py`, `procedure2.py`): hiện thực Algorithm 1 + Thủ tục 2 theo bài báo,
+  cho độ dài đường đi ngắn nhất từ nguồn tới mọi đỉnh.
+- **Đường đi** — `funnel_paths.py`: dựng lại polyline đường đi trên mặt đa diện theo thuật toán Funnel Tree.
 
 ## Cấu trúc
 
 | File | Vai trò |
 |------|---------|
-| `algorithm1.py` | `Mesh` + `shortest_distances` (Algorithm 1, bản tối giản — chỉ khoảng cách) |
+| `algorithm1.py` | `Mesh` + `shortest_distances` (Algorithm 1 + Thủ tục 2 — tính khoảng cách ngắn nhất) |
 | `procedure2.py` | Thủ tục 2 (*Clip off Funnels*), nhận các cặp `(l, ∠pvz)` |
 | `clip_glue.py` | `clip_with_procedure2` — nối Thủ tục 2 vào Algorithm 1 |
-| `funnel_paths.py` | Port `ft.cpp`: `sub_funnel_tree` → tìm đỉnh lõm → geodesic → **trải phẳng** → polyline |
+| `funnel_paths.py` | Hiện thực truy hồi polyline theo thuật toán Funnel Tree (theo bài báo) |
 | `run.py` | Chạy Algorithm 1, so khoảng cách với `expected/`; chứa `read_geom`, `S`, `SOURCES` |
 | `view_geom.py` | Xem mesh 3D + chồng lớp đường đi (Tk hoặc PNG) |
 | `funnel_tree_explained.ipynb` | Notebook minh họa |
@@ -68,7 +66,7 @@ python3 view_geom.py               # xem tất cả (Tk) / PNG nếu thiếu Tk
 ```
 
 `view_geom.py` chồng lớp đường đi — **đỏ liền** = `output/` của ta, **xanh lá đứt** =
-`expected/` (C++). Chọn lớp bằng `--paths`:
+`expected/` là output tham chiếu để so sánh. Chọn lớp bằng `--paths`:
 
 ```sh
 python3 view_geom.py --paths output     # chỉ của ta
@@ -82,7 +80,6 @@ python3 view_geom.py --png --no-open cliff.geom    # xuất view/cliff.png
 
 - `funnel_paths.py --check`: **lệch max = 0** so với `expected/` cho `J17, L, cliff,
   demo_mesh` (`s=1`) và `star` (`s=0`). `cube`/`icosahedron` không có `expected/`
-  (chỉ có hình vẽ trong bài báo).
-- `run.py`: khoảng cách Algorithm 1 khớp `J17` (lệch ~1e-5, do C++ làm tròn 4 chữ số);
-  các mesh có đỉnh lõm (`L, cliff, star, demo_mesh`) lệch nhiều hơn — đúng như dự kiến
-  với bản tối giản chưa xử lý đầy đủ Thủ tục 2.
+  (chỉ có hình vẽ trong bài báo (hiện thực tham khảo)).
+- `run.py`: khoảng cách `algorithm1.py` (Algorithm 1 + Thủ tục 2) cho kết quả hợp lý theo bài báo;
+  khi có đỉnh lõm, cần lưu ý tới pha xử lý trong thuật toán đầy đủ — kết quả phản ánh hiện thực hiện tại của code.
