@@ -54,28 +54,28 @@ mỗi dòng một đỉnh, `m x y z x y z ...` = đường gấp khúc từ ngu�
 
 ## Cách chạy
 
-Dùng venv `~/venvs/do-an-3-2` (matplotlib/numpy/trimesh; không có `_tkinter` → chỉ PNG):
+Chỉ `view_geom.py` cần thư viện ngoài (`matplotlib`, tùy chọn `tkinter`); các script
+còn lại thuần Python chuẩn, chạy bằng `python3` hệ thống:
 
 ```sh
 cd 3.2-drone-delivery/src/my
-PY=~/venvs/do-an-3-2/bin/python
 
-$PY run.py                     # Algorithm 1: khoảng cách vs expected/
-$PY funnel_paths.py            # dựng lại đường đi -> output/ (nguồn theo SOURCES)
-$PY funnel_paths.py --check    # so đường đi với expected/ (lệch max)
-$PY funnel_paths.py -s 4 cube.geom
-$PY view_geom.py               # xem tất cả (Tk) / PNG nếu thiếu Tk
+python3 run.py                     # Algorithm 1: khoảng cách vs expected/
+python3 funnel_paths.py            # dựng lại đường đi -> output/ (nguồn theo SOURCES)
+python3 funnel_paths.py --check    # so đường đi với expected/ (lệch max)
+python3 funnel_paths.py -s 4 cube.geom
+python3 view_geom.py               # xem tất cả (Tk) / PNG nếu thiếu Tk
 ```
 
 `view_geom.py` chồng lớp đường đi — **đỏ liền** = `output/` của ta, **xanh lá đứt** =
 `expected/` (C++). Chọn lớp bằng `--paths`:
 
 ```sh
-$PY view_geom.py --paths output     # chỉ của ta
-$PY view_geom.py --paths expected   # chỉ tham chiếu
-$PY view_geom.py --paths both       # cả hai (mặc định)
-$PY view_geom.py --paths none       # chỉ mesh
-$PY view_geom.py --png --no-open cliff.geom    # xuất view/cliff.png
+python3 view_geom.py --paths output     # chỉ của ta
+python3 view_geom.py --paths expected   # chỉ tham chiếu
+python3 view_geom.py --paths both       # cả hai (mặc định)
+python3 view_geom.py --paths none       # chỉ mesh
+python3 view_geom.py --png --no-open cliff.geom    # xuất view/cliff.png
 ```
 
 ## Kiểm chứng
