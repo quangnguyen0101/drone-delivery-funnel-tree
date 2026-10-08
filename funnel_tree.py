@@ -163,7 +163,7 @@ def funnel_tree(mesh: Mesh, s: int, clip: ClipFn | None = None) -> Tree:
           Tra ve cac con can xoa, ghi bang chuoi:
               "A-left", "A-right"  -> con trai/phai cua f
               "B-left", "B-right"  -> con trai/phai cua other
-          (xem funnel_clip_glue.py de noi truc tiep Thủ tục 2).
+          (xem funnel_ de noi truc tiep Thủ tục 2).
     """
     tree = Tree()
     tree.best = [math.inf] * len(mesh.points)
