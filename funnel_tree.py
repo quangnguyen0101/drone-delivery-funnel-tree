@@ -1,28 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Thuật toán 1 — Funnel tree để tìm các đường đi ngắn nhất
-========================================================
+"""Tính khoảng cách ngắn nhất từ nguồn đến các đỉnh bằng Funnel Tree.
 
-Hiện thực theo:
+Thuật toán 1: sinh funnel tree từ nguồn trên bề mặt đa diện tam giác hoá.
+Có thể kết hợp với Thủ tục 2 (qua hàm clip) để cắt bỏ funnel không cần thiết.
 
-
-Mục 4.1 (Thuật toán 1) và Mục 3.3 (xác định con của một funnel, các PT (1)–(6)).
-
-- Dữ liệu vào: bề mặt đa diện tam giác hoá + đỉnh nguồn s.
-- Dữ liệu ra:  funnel tree gốc s, sinh theo từng tầng (level).
-
-Đây là bản tối giản đúng như giả thiết của Mục 4.1:
-    SP_S(v, p) = [v, p]   và   SP_S(p, q) = [p, q].
-Trường hợp tổng quát (SP là đường gấp khúc) xem Hình 13 bài báo.
-
-Chỗ cần nối Thủ tục 2 (Clip off Funnels) được đánh dấu bằng `clip`.
-Nếu `clip = None`, thuật toán chạy như khi chưa xử lý "chiếm đỉnh v".
-
-Phụ thuộc: chỉ stdlib.
+Chỉ phụ thuộc stdlib.
 """
 
 from __future__ import annotations
+
 
 import math
 from dataclasses import dataclass, field
@@ -49,7 +36,7 @@ def _angle_sss(opposite: float, s1: float, s2: float) -> float:
 
 
 # ---------------------------------------------------------------------------
-# Bề mặt đa diện tam giác hoá
+# Lớp biểu diễn lưới tam giác
 # ---------------------------------------------------------------------------
 
 class Mesh:
