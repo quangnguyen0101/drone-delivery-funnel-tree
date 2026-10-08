@@ -1,11 +1,11 @@
 # `src/my` — Hiện thực Funnel Tree (Python)
 
-Hiện thực lại thuật toán **Funnel Tree** (bài báo *Optimization*, Phan Thanh An et al., 2024) trong Python thuần,
-dựa chủ yếu vào **bài báo** để xây dựng.
+Hiện thực lại thuật toán **Funnel Tree** trong Python thuần,
+dựa trên thuật toán Funnel Tree.
 
 Hai nhánh công việc:
 
-- **Khoảng cách** — `algorithm1.py` (+ `clip_glue.py`, `procedure2.py`): hiện thực Algorithm 1 + Thủ tục 2 theo bài báo,
+- **Khoảng cách** — `funnel_tree.py` (+ `funnel_clip_glue.py`, `funnel_clip.py`): hiện thực Thuật toán 1 + Thủ tục 2 theo bài báo,
   cho độ dài đường đi ngắn nhất từ nguồn tới mọi đỉnh.
 - **Đường đi** — `funnel_paths.py`: dựng lại polyline đường đi trên mặt đa diện theo thuật toán Funnel Tree.
 
@@ -13,7 +13,7 @@ Hai nhánh công việc:
 
 | File | Vai trò |
 |------|---------|
-| `algorithm1.py` | `Mesh` + `shortest_distances` (Algorithm 1 + Thủ tục 2 — tính khoảng cách ngắn nhất) |
+| `algorithm1.py` | `Mesh` + `shortest_distances` (Thuật toán 1 + Thủ tục 2 — tính khoảng cách ngắn nhất) |
 | `procedure2.py` | Thủ tục 2 (*Clip off Funnels*), nhận các cặp `(l, ∠pvz)` |
 | `clip_glue.py` | `clip_with_procedure2` — nối Thủ tục 2 vào Algorithm 1 |
 | `funnel_paths.py` | Hiện thực truy hồi polyline theo thuật toán Funnel Tree (theo bài báo) |
@@ -81,5 +81,5 @@ python3 view_geom.py --png --no-open cliff.geom    # xuất view/cliff.png
 - `funnel_paths.py --check`: **lệch max = 0** so với `expected/` cho `J17, L, cliff,
   demo_mesh` (`s=1`) và `star` (`s=0`). `cube`/`icosahedron` không có `expected/`
   (chỉ có hình vẽ trong bài báo (hiện thực tham khảo)).
-- `run.py`: khoảng cách `algorithm1.py` (Algorithm 1 + Thủ tục 2) cho kết quả hợp lý theo bài báo;
+- `run.py`: khoảng cách `algorithm1.py` (Thuật toán 1 + Thủ tục 2) cho kết quả hợp lý theo bài báo;
   khi có đỉnh lõm, cần lưu ý tới pha xử lý trong thuật toán đầy đủ — kết quả phản ánh hiện thực hiện tại của code.
