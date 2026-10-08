@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Dựng lại ĐƯỜNG ĐI ngắn nhất (polyline) từ funnel tree.
+"""Dựng lại đường đi ngắn nhất (polyline) từ funnel tree.
 
-Port trung thành `/funnel_tree_example/algo/`:
+Các bước chính:
+    1. Xây funnel tree cho nguồn (như funnel_tree.py).
+    2. Với mỗi đỉnh đích: tìm path qua đỉnh lõm nếu cần, trải phẳng (unfold)
+       các đoạn geodesic ra mặt phẳng, rồi nối thành polyline.
 
-    subFunnelTree  -> cây funnel cho một nguồn (giống funnel_tree.py)
-    FunnelTree     -> (1) geodesic thẳng nhất, (2) tìm đỉnh lõm,
-                      (3) geodesic từ đỉnh lõm, (4) gộp lại,
-                      (5) trải phẳng (unfold) ra các điểm trên mặt,
-                      (6) nối các đoạn geodesic thành polyline
-
-Ghi ra output/<tên>.geom, cùng định dạng với expected/:
-    mỗi dòng  `m [x y z] [x y z] ...`  = đường đi từ nguồn tới đỉnh tương ứng.
+Ghi ra output/<tên>.geom, mỗi dòng:
+    `m [x y z] [x y z] ...`  = đường đi từ nguồn tới đỉnh tương ứng.
 
 Chạy:  python funnel_paths.py [--source S] [tên.geom ...]
 """

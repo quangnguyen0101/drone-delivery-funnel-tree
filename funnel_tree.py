@@ -92,7 +92,7 @@ class Funnel:
     pq   : l([p, q])
     spq  : ∠spq
     psw  : ∠psq — góc tại cusp giữa hai border
-    pqv  : góc tích luỹ tại q từ [q, p] tới [q, x] (PT (4))
+    pqv  : góc tích luỹ tại q từ [q, p] tới [q, x]
     level: tầng trong cây
     """
     p: int
@@ -203,7 +203,7 @@ def _expand(mesh: Mesh, f: Funnel, out: list[Funnel], tree: Tree,
         f.S = f.S + [face]
         v = mesh.third_vertex(face, f.x, f.q)
 
-        # PT (4): beta_v
+        # góc tích luỹ beta_v tại v
         f.pqv += mesh.angle(f.x, f.q, v)
         vq = mesh.dist(v, f.q)
         pv = _law_cos_side(f.pq, vq, f.pqv)
@@ -212,7 +212,7 @@ def _expand(mesh: Mesh, f: Funnel, out: list[Funnel], tree: Tree,
             vpq = -vpq
         beta_v = f.spq + vpq
 
-        if beta_v >= PI:                      # (5) không thoả: đổi direct destination
+        if beta_v >= PI:                      # không thoả: đổi direct destination
             f.x = v
             continue
 

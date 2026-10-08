@@ -4,7 +4,7 @@
 
 Nguồn mặc định: s = 1 (0-based), input/<file>.geom -> output/<file>.geom
 Output tham chiếu: mien dong, moi dong <so diem> x y z x y z ...
-Ta tinh do dai duong di gon tu output do va so sanh voi dist() cua thuat toan 1.
+Tính độ dài đường đi gọn từ output tham chiếu và so sánh với dist() của thuật toán.
 """
 
 from __future__ import annotations
@@ -17,9 +17,8 @@ from pathlib import Path
 from funnel_tree import Mesh, shortest_distances
 from funnel_clip_glue import clip_with_funnel_clip
 
-S = 1  # nguon, giong 
-# Nguồn khác mặc định, theo bài báo / expected/: cube (Hình 7) s=4, icosahedron
-# (Hình 4) s=0; expected/star.geom cũng dựng bằng s=0.
+S = 1  # nguồn mặc định (0-based)
+# Nguồn khác: cube s=4, icosahedron s=0, star s=0 (khớp expected/).
 SOURCES = {"cube.geom": 4, "icosahedron.geom": 0, "star.geom": 0}
 
 
