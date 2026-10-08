@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Chạy Algorithm 1 + Procedure 2 trên các file .geom, so với output tham chiếu.
+"""Chạy Thuật toán 1 + Thủ tục 2 trên các file .geom, so với output tham chiếu.
 
 Nguồn mặc định: s = 1 (0-based), input/<file>.geom -> output/<file>.geom
 Output tham chiếu: mien dong, moi dong <so diem> x y z x y z ...
@@ -63,7 +63,7 @@ def edge_dijkstra(mesh: Mesh, s: int) -> list[float]:
     """Cận trên: đường đi ngắn nhất trên 1-skeleton (chỉ đi cạnh tam giác).
 
     Không cần file C++: 1-skeleton la subset cua mat, nen do dai nay >= do dai
-    tren mat. Algorithm 1 ra so lon hon cận trên = sai chắc chắn.
+    tren mat. Thuật toán 1 ra so lon hon cận trên = sai chắc chắn.
     """
     import heapq
 

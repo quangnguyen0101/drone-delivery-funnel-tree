@@ -12,7 +12,7 @@ Cho hai funnel F_{p,q,S} và F_{p,q,S1} cùng cusp s, cùng chiếm đỉnh v c�
     l,  l1       : |SP_S(s, v)| và |SP_{S1}(s, v)|
     ∠pvz, ∠pvz1  : góc tại v giữa [v, p] và [v, z] (z = giao của SP(s, v) với [p, q])
 
-KHÔNG cần trải phẳng để tính l và ∠pvz: chúng chính là `sv` và `pvs` mà Algorithm 1
+KHÔNG cần trải phẳng để tính l và ∠pvz: chúng chính là `sv` và `pvs` mà Thuật toán 1
 đã tính sẵn bằng định luật cos (PT (1)–(2)), vì z nằm trên đoạn thẳng s'v nên
 ∠pvz = ∠pvs. Vì vậy thủ tục này chỉ nhận hai cặp (l, ∠pvz).
 
