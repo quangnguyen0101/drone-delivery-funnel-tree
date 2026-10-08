@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Dựng lại ĐƯỜNG ĐI ngắn nhất (polyline) từ funnel tree.
 
-Port trung thành `anh-minh-phuc/funnel_tree_example/algo/ft.cpp`:
+Port trung thành `/funnel_tree_example/algo/`:
 
     subFunnelTree  -> cây funnel cho một nguồn (giống algorithm1.py)
     FunnelTree     -> (1) geodesic thẳng nhất, (2) tìm đỉnh lõm,
@@ -10,7 +10,7 @@ Port trung thành `anh-minh-phuc/funnel_tree_example/algo/ft.cpp`:
                       (5) trải phẳng (unfold) ra các điểm trên mặt,
                       (6) nối các đoạn geodesic thành polyline
 
-Ghi ra output/<tên>.geom, cùng định dạng với output C++ (và expected/):
+Ghi ra output/<tên>.geom, cùng định dạng với expected/:
     mỗi dòng  `m [x y z] [x y z] ...`  = đường đi từ nguồn tới đỉnh tương ứng.
 
 Chạy:  python funnel_paths.py [--source S] [tên.geom ...]
@@ -56,7 +56,7 @@ class Funnel:
 
 
 def sub_funnel_tree(mesh: Mesh, s: int) -> list[list[Funnel]]:
-    """Cây funnel gốc s theo từng tầng (không có Thủ tục 2, giống ft.cpp)."""
+    """Cây funnel gốc s theo từng tầng (không có Thủ tục 2, giống )."""
     faces_at_s = mesh.vertex_faces[s]
     tree: list[list[Funnel]] = []
     root: list[Funnel] = []

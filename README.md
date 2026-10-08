@@ -19,9 +19,9 @@ Hai nhánh công việc:
 | `funnel_paths.py` | Hiện thực truy hồi polyline theo thuật toán Funnel Tree (theo bài báo) |
 | `run.py` | Chạy Algorithm 1, so khoảng cách với `expected/`; chứa `read_geom`, `S`, `SOURCES` |
 | `view_geom.py` | Xem mesh 3D + chồng lớp đường đi (Tk hoặc PNG) |
-| `funnel_tree_explained.ipynb` | Notebook minh họa |
+| `funnel_tree_algorithm.ipynb` | Notebook minh họa |
 | `input/` | 7 mesh `.geom` (+ `city.glb`) |
-| `expected/` | Output C++ tham chiếu (cho `J17, L, cliff, demo_mesh, star`) |
+| `expected/` | Output tham chiếu (cho `J17, L, cliff, demo_mesh, star`) |
 | `output/` | Output của Python (đủ 7 mesh) |
 | `view/` | Ảnh PNG do `view_geom.py` xuất |
 

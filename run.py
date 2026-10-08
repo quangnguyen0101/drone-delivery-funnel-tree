@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Chạy Algorithm 1 trên các file .geom của anh Minh Phúc, so với output C++.
+"""Chạy Algorithm 1 + Procedure 2 trên các file .geom, so với output tham chiếu.
 
-Cùng nguồn với ft_main.cpp: s = 1 (0-based), input/<file>.geom -> output/<file>.geom
-Output C++: mien dong, moi dong <so diem> x y z x y z ...
+Nguồn mặc định: s = 1 (0-based), input/<file>.geom -> output/<file>.geom
+Output tham chiếu: mien dong, moi dong <so diem> x y z x y z ...
 Ta tinh do dai duong di gon tu output do va so sanh voi dist() cua thuat toan 1.
 """
 
@@ -17,7 +17,7 @@ from pathlib import Path
 from algorithm1 import Mesh, shortest_distances
 from clip_glue import clip_with_procedure2
 
-S = 1  # nguon, giong ft_main.cpp
+S = 1  # nguon, giong 
 # Nguồn khác mặc định, theo bài báo / expected/: cube (Hình 7) s=4, icosahedron
 # (Hình 4) s=0; expected/star.geom cũng dựng bằng s=0.
 SOURCES = {"cube.geom": 4, "icosahedron.geom": 0, "star.geom": 0}
@@ -42,9 +42,9 @@ def read_geom(path: Path) -> Mesh:
 
 
 def cpp_path_lengths(path: Path, nvertex: int) -> list[float]:
-    """Do dai duong di tu output C++. Dong thu i ung dinh i (ft.cpp ghi theo thu tu).
+    """Do dai duong di tu output tham chiếu. Dong thu i ung dinh i ( ghi theo thu tu).
 
-    Output C++: <m> [x y z] [x y z] ... , lam tron 4 chu so.
+    Output tham chiếu: <m> [x y z] [x y z] ... , lam tron 4 chu so.
     """
     lines = [l for l in path.read_text().split("\n") if l.strip()]
     assert len(lines) == nvertex, f"{path.name}: {len(lines)} dong != {nvertex} dinh"
@@ -118,7 +118,7 @@ def main() -> None:
                   f"khongToi={len(inf_v):2d}  (khong co expected/)")
             continue
         exp = cpp_path_lengths(exp_path, len(mesh.points))
-        # output C++ lam tron 4 chu so -> sai so do do chinh no, khong phai thuat toan
+        # output tham chiếu lam tron 4 chu so -> sai so do do chinh no, khong phai thuat toan
         errs = sorted(((abs(dist[v] - L), v) for v, L in enumerate(exp)),
                       reverse=True)
         top = errs[0] if errs else (0.0, -1)
@@ -132,7 +132,7 @@ def main() -> None:
             print(f"    vuot {e:.4f} tai dinh {v} "
                   f"({mesh.points[v][0]:.2f},{mesh.points[v][1]:.2f},"
                   f"{mesh.points[v][2]:.2f})")
-    print(f"\nsai lon nhat so voi output C++: {worst_overall:.6g}")
+    print(f"\nsai lon nhat so voi output tham chiếu: {worst_overall:.6g}")
 
 
 if __name__ == "__main__":
