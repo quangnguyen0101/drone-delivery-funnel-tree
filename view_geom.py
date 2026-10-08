@@ -42,7 +42,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import Patch  # noqa: E402
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # noqa: E402
 
-from algorithm1 import Mesh  # noqa: E402
+from funnel_tree import Mesh  # noqa: E402
 from run import S, SOURCES, read_geom, source_for  # noqa: E402
 
 

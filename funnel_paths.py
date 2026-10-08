@@ -4,7 +4,7 @@
 
 Port trung thành `/funnel_tree_example/algo/`:
 
-    subFunnelTree  -> cây funnel cho một nguồn (giống algorithm1.py)
+    subFunnelTree  -> cây funnel cho một nguồn (giống funnel_tree.py)
     FunnelTree     -> (1) geodesic thẳng nhất, (2) tìm đỉnh lõm,
                       (3) geodesic từ đỉnh lõm, (4) gộp lại,
                       (5) trải phẳng (unfold) ra các điểm trên mặt,
@@ -24,7 +24,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-from algorithm1 import Mesh
+from funnel_tree import Mesh
 from run import S, read_geom, source_for
 
 INF = math.inf

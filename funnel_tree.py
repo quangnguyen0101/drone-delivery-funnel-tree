@@ -6,9 +6,6 @@ Thuật toán 1 — Funnel tree để tìm các đường đi ngắn nhất
 
 Hiện thực theo:
 
-  Phan Thanh An, Tran Van Hoai & Vuong Ba Thinh (2024).
-  "The funnel tree algorithm for finding shortest paths on polyhedral surfaces."
-  Optimization, 73(13), 4011-4036.  DOI: 10.1080/02331934.2023.2241496
 
 Mục 4.1 (Thuật toán 1) và Mục 3.3 (xác định con của một funnel, các PT (1)–(6)).
 
@@ -166,7 +163,7 @@ def funnel_tree(mesh: Mesh, s: int, clip: ClipFn | None = None) -> Tree:
           Tra ve cac con can xoa, ghi bang chuoi:
               "A-left", "A-right"  -> con trai/phai cua f
               "B-left", "B-right"  -> con trai/phai cua other
-          (xem clip_glue.py de noi truc tiep Procedure 2).
+          (xem funnel_clip_glue.py de noi truc tiep Procedure 2).
     """
     tree = Tree()
     tree.best = [math.inf] * len(mesh.points)

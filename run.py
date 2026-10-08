@@ -14,8 +14,8 @@ import sys
 import time
 from pathlib import Path
 
-from algorithm1 import Mesh, shortest_distances
-from clip_glue import clip_with_procedure2
+from funnel_tree import Mesh, shortest_distances
+from funnel_clip_glue import clip_with_funnel_clip
 
 S = 1  # nguon, giong 
 # Nguồn khác mặc định, theo bài báo / expected/: cube (Hình 7) s=4, icosahedron
@@ -100,7 +100,7 @@ def main() -> None:
         s = source_for(f.name)
         t0 = time.perf_counter()
         try:
-            dist = shortest_distances(mesh, s, clip_with_procedure2)
+            dist = shortest_distances(mesh, s, clip_with_funnel_clip)
         except Exception as e:
             print(f"{f.name:18s} V0 ngoai le: {type(e).__name__}: {e}")
             continue

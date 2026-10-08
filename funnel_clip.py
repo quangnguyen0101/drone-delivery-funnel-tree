@@ -6,9 +6,6 @@ Thủ tục 2 — Clip off Funnels
 
 Hiện thực theo:
 
-  Phan Thanh An, Tran Van Hoai & Vuong Ba Thinh (2024).
-  "The funnel tree algorithm for finding shortest paths on polyhedral surfaces."
-  Optimization, 73(13), 4011-4036.  DOI: 10.1080/02331934.2023.2241496
 
 Cho hai funnel F_{p,q,S} và F_{p,q,S1} cùng cusp s, cùng chiếm đỉnh v của dãy
 △pqv. Gọi:
