@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 from funnel_tree import Mesh, shortest_distances
-from funnel_funnel_clip_glue import clip_with_funnel_clip
+from funnel_clip_glue import clip_with_funnel_clip
 
 S = 1  # nguon, giong 
 # Nguồn khác mặc định, theo bài báo / expected/: cube (Hình 7) s=4, icosahedron
