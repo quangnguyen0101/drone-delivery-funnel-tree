@@ -13,21 +13,20 @@ Hai nhánh công việc:
 
 | File | Vai trò |
 |------|---------|
-| `algorithm1.py` | `Mesh` + `shortest_distances` (Thuật toán 1 + Thủ tục 2 — tính khoảng cách ngắn nhất) |
-| `procedure2.py` | Thủ tục 2 (*Clip off Funnels*), nhận các cặp `(l, ∠pvz)` |
-| `clip_glue.py` | `clip_with_procedure2` — nối Thủ tục 2 vào Algorithm 1 |
+| `funnel_tree.py` | `Mesh` + `shortest_distances` (Thuật toán 1 + Thủ tục 2 — tính khoảng cách ngắn nhất), đọc `.geom` (`read_geom`), bảng nguồn `SOURCES` |
 | `funnel_paths.py` | Hiện thực truy hồi polyline theo thuật toán Funnel Tree (theo bài báo) |
-| `run.py` | Chạy Algorithm 1, so khoảng cách với `expected/`; chứa `read_geom`, `S`, `SOURCES` |
+| `funnel_clip.py` | Thủ tục 2 (*Clip off Funnels*) |
+| `funnel_clip_glue.py` | `clip_with_procedure2` — nối Thủ tục 2 vào Algorithm 1 |
+| `kiem_chung.py` | Kiểm chứng chéo độc lập (Dijkstra 1-skeleton, trải mặt phẳng) + đối chiếu `expected/` |
 | `view_geom.py` | Xem mesh 3D + chồng lớp đường đi (Tk hoặc PNG) |
-| `funnel_tree_algorithm.ipynb` | Notebook minh họa |
-| `input/` | 7 mesh `.geom` (+ `city.glb`) |
+| `input/` | 9 mesh `.geom` (+ `city.glb`) |
 | `expected/` | Output tham chiếu (cho `J17, L, cliff, demo_mesh, star`) |
-| `output/` | Output của Python (đủ 7 mesh) |
+| `output/` | Output của Python (mọi mesh trong `input/`) |
 | `view/` | Ảnh PNG do `view_geom.py` xuất |
 
 ## Định dạng `.geom`
 
-**Input** (`input/*.geom`, đọc bởi `run.read_geom`):
+**Input** (`input/*.geom`, đọc bởi `funnel_tree.read_geom`):
 
 ```
 v f E
@@ -41,13 +40,15 @@ mỗi dòng một đỉnh, `m x y z x y z ...` = đường gấp khúc từ ngu�
 
 ## Đỉnh nguồn `s` theo mesh
 
-`expected/` lấy `s` đúng như bài báo; `run.py:SOURCES` giữ bảng này để các script tự chọn:
+`expected/` lấy `s` đúng như bài báo; `funnel_tree.py:SOURCES` giữ bảng này để các script tự chọn:
 
 | mesh | `s` | nguồn |
 |------|-----|-------|
 | `cube.geom` (Hình 7) | 4 | bài báo |
 | `icosahedron.geom` (Hình 4) | 0 | bài báo |
 | `star.geom` | 0 | khớp `expected/` |
+| `dome.geom` (bề mặt mở) | 17 | mở rộng — biên |
+| `terrain.geom` (địa hình hở + lõm) | 24 | mở rộng — giữa mesh |
 | còn lại (`J17, L, cliff, demo_mesh`) | 1 | `ft_main.cpp` |
 
 ## Cách chạy
@@ -58,7 +59,6 @@ còn lại thuần Python chuẩn, chạy bằng `python3` hệ thống:
 ```sh
 cd 3.2-drone-delivery/src/my
 
-python3 run.py                     # Algorithm 1: khoảng cách vs expected/
 python3 funnel_paths.py            # dựng lại đường đi -> output/ (nguồn theo SOURCES)
 python3 funnel_paths.py --check    # so đường đi với expected/ (lệch max)
 python3 funnel_paths.py -s 4 cube.geom
@@ -81,5 +81,9 @@ python3 view_geom.py --png --no-open cliff.geom    # xuất view/cliff.png
 - `funnel_paths.py --check`: **lệch max = 0** so với `expected/` cho `J17, L, cliff,
   demo_mesh` (`s=1`) và `star` (`s=0`). `cube`/`icosahedron` không có `expected/`
   (chỉ có hình vẽ trong bài báo (hiện thực tham khảo)).
-- `run.py`: khoảng cách `algorithm1.py` (Thuật toán 1 + Thủ tục 2) cho kết quả hợp lý theo bài báo;
-  khi có đỉnh lõm, cần lưu ý tới pha xử lý trong thuật toán đầy đủ — kết quả phản ánh hiện thực hiện tại của code.
+- `kiem_chung.py`: kiểm chứng chéo hai cách độc lập — Dijkstra 1-skeleton (cận trên của đường ngắn nhất)
+  và trải mặt phẳng (geodesic = đoạn thẳng) — mọi `input/*.geom`, chạy không cần thư viện ngoài.
+- Bề mặt mở: `dome` (lồi, biên), `terrain` (địa hình có lõm) — mọi đỉnh tới được từ `s`;
+  `terrain` nguồn giữa mesh khớp distance trong lỗi làm tròn.
+- `run.py` đã bỏ (gộp toàn bộ vào `funnel_tree.py` / `funnel_paths.py`).
+- `funnel_tree.py` `__main__`: tự-kiểm tra bề mặt mở trải khớp Euclid → `PASS`.

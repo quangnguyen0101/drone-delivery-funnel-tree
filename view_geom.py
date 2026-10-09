@@ -42,8 +42,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import Patch  # noqa: E402
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # noqa: E402
 
-from funnel_tree import Mesh  # noqa: E402
-from run import S, SOURCES, read_geom, source_for  # noqa: E402
+from funnel_tree import Mesh, S, SOURCES, read_geom, source_for  # noqa: E402
 
 
 def read_paths(path: Path) -> list[list[tuple[float, float, float]]]:
@@ -88,10 +87,11 @@ def render(mesh: Mesh, title: str, wire: bool = False, source: int = S,
     tris = [list(mesh.points[i] for i in t) for t in mesh.triangles]
     if not wire:
         ax.add_collection3d(Poly3DCollection(
-            tris, facecolor="#7fb3ff", edgecolor="#33415e",
-            linewidths=0.6, alpha=0.45))
-    ax.add_collection3d(Poly3DCollection(
-        tris, facecolor="none", edgecolor="#1f2a44", linewidths=0.7))
+            tris, facecolor="#7fb3ff", edgecolor="#1f2a44",
+            linewidths=0.7, alpha=0.45))
+    else:
+        ax.add_collection3d(Poly3DCollection(
+            tris, facecolor=(0, 0, 0, 0), edgecolor="#1f2a44", linewidths=0.7))
 
     xs, ys, zs = zip(*mesh.points)
     ax.scatter(xs, ys, zs, s=14, depthshade=False, color="#0f172a")

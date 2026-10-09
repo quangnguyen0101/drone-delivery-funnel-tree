@@ -21,8 +21,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-from funnel_tree import Mesh
-from run import S, read_geom, source_for
+from funnel_tree import Mesh, S, _fan, read_geom, source_for
 
 INF = math.inf
 
@@ -54,27 +53,14 @@ class Funnel:
 
 def sub_funnel_tree(mesh: Mesh, s: int) -> list[list[Funnel]]:
     """Cây funnel gốc s theo từng tầng (không có Thủ tục 2, giống )."""
-    faces_at_s = mesh.vertex_faces[s]
     tree: list[list[Funnel]] = []
     root: list[Funnel] = []
-    q = -1
 
-    def insert(psq_index: int, p: int) -> None:
-        nonlocal q
-        t = mesh.triangles[psq_index]
-        q = t[0] + t[1] + t[2] - s - p
+    # Fan gốc: kín quét một vòng, hở quét hai hướng dừng ở biên (giống funnel_tree).
+    for psq_index, p, q in _fan(mesh, s):
         psq = mesh.angle(p, s, q)
         root.append(Funnel(p, q, p, p, [psq_index], _d2(mesh, s, p),
                            _d2(mesh, p, q), mesh.angle(s, p, q), psq, 0.0, 0.0))
-
-    psq_index = faces_at_s[0]
-    t = mesh.triangles[psq_index]
-    p = t[0] if t[0] != s else t[1]
-    insert(psq_index, p)
-    for _ in range(1, len(faces_at_s)):
-        ef = mesh.edge_faces[(s, q) if s < q else (q, s)]
-        psq_index = ef[0] + ef[1] - psq_index
-        insert(psq_index, q)
 
     tree.append(root)
     while tree[-1]:
@@ -82,6 +68,8 @@ def sub_funnel_tree(mesh: Mesh, s: int) -> list[list[Funnel]]:
         for f in tree[-1]:
             while True:                       # goto find_v
                 ef = mesh.edge_faces[min(f.x, f.q), max(f.x, f.q)]
+                if len(ef) < 2:               # cạnh biên trên bề mặt hở
+                    break
                 next_face = ef[0] + ef[1] - f.sequence[-1]
                 if next_face in f.sequence:
                     break
@@ -159,6 +147,20 @@ def funnel_tree_paths(mesh: Mesh, s: int) -> list[list[tuple[float, float, float
             total += mesh.angle(a, i, b)
         if total >= math.pi * 2 + 1e-5:
             concave.append(i)
+
+    # Bề mặt hở: đỉnh là q của funnel gốc trên cạnh biên kề s (như 17-{18,24} của dome)
+    # không bao giờ thành p của funnel nào nên không có Funnel để dựng path.
+    # Đường đi là thẳng trên cạnh biên s-q (cạnh 1 mặt).
+    for (a, b), fcs in mesh.edge_faces.items():
+        if len(fcs) > 1 or (a != s and b != s):
+            continue
+        q = b if a == s else a
+        d2 = _d2(mesh, s, q)
+        if d2 < path_infos[q].total_length ** 2:
+            path_infos[q].total_length = math.sqrt(d2)
+            path_infos[q].curr_funnel = Funnel(
+                p=q, q=q, x=q, a=q, sequence=[fcs[0]],
+                sp2=d2, pq2=d2, spq=0.0, psw=0.0, pqv=0.0, asp=0.0)
 
     sub_infos = [_generate_path_info(mesh, i, trees) for i in concave]
 
@@ -257,7 +259,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Sinh output/ (đường đi) từ funnel tree")
     ap.add_argument("files", nargs="*", help="tên file trong input/ (mặc định: tất cả)")
     ap.add_argument("-s", "--source", type=int, default=None,
-                    help=f"đỉnh nguồn (mặc định theo bảng SOURCES của run.py, thường {S})")
+                    help=f"đỉnh nguồn (mặc định theo bảng SOURCES của funnel_tree.py, thường {S})")
     ap.add_argument("--check", action="store_true",
                     help="so độ dài đường đi với expected/ (nếu có)")
     a = ap.parse_args()
