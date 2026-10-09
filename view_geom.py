@@ -186,7 +186,7 @@ def main() -> None:
             plt.close(fig)
             print("  (cửa sổ đã đóng)")
             continue
-        out = Path(a.out) if a.out else outdir / f"{f.stem}.png"
+        out = Path(a.out) if a.out else outdir / f"{f.stem}_{a.paths}.png"
         out.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(out, dpi=140, bbox_inches="tight")
         plt.close(fig)

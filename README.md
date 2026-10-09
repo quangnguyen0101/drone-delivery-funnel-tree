@@ -1,4 +1,4 @@
-# `src/my` — Hiện thực Funnel Tree (Python)
+# Funnel Tree — Hiện thực Python
 
 Hiện thực lại thuật toán **Funnel Tree** trong Python thuần,
 dựa trên thuật toán Funnel Tree.
@@ -17,7 +17,6 @@ Hai nhánh công việc:
 | `funnel_paths.py` | Hiện thực truy hồi polyline theo thuật toán Funnel Tree (theo bài báo) |
 | `funnel_clip.py` | Thủ tục 2 (*Clip off Funnels*) |
 | `funnel_clip_glue.py` | `clip_with_procedure2` — nối Thủ tục 2 vào Algorithm 1 |
-| `kiem_chung.py` | Kiểm chứng chéo độc lập (Dijkstra 1-skeleton, trải mặt phẳng) + đối chiếu `expected/` |
 | `view_geom.py` | Xem mesh 3D + chồng lớp đường đi (Tk hoặc PNG) |
 | `input/` | 9 mesh `.geom` (+ `city.glb`) |
 | `expected/` | Output tham chiếu (cho `J17, L, cliff, demo_mesh, star`) |
@@ -57,8 +56,6 @@ Chỉ `view_geom.py` cần thư viện ngoài (`matplotlib`, tùy chọn `tkinte
 còn lại thuần Python chuẩn, chạy bằng `python3` hệ thống:
 
 ```sh
-cd 3.2-drone-delivery/src/my
-
 python3 funnel_paths.py            # dựng lại đường đi -> output/ (nguồn theo SOURCES)
 python3 funnel_paths.py --check    # so đường đi với expected/ (lệch max)
 python3 funnel_paths.py -s 4 cube.geom
@@ -73,16 +70,16 @@ python3 view_geom.py --paths output     # chỉ của ta
 python3 view_geom.py --paths expected   # chỉ tham chiếu
 python3 view_geom.py --paths both       # cả hai (mặc định)
 python3 view_geom.py --paths none       # chỉ mesh
-python3 view_geom.py --png --no-open cliff.geom    # xuất view/cliff.png
+python3 view_geom.py --png --no-open cliff.geom    # xuất view/cliff_both.png
 ```
+
+Ảnh PNG xuất vào `view/<tên>_<option>.png` (`<option>` = both | expected | output | none).
 
 ## Kiểm chứng
 
 - `funnel_paths.py --check`: **lệch max = 0** so với `expected/` cho `J17, L, cliff,
   demo_mesh` (`s=1`) và `star` (`s=0`). `cube`/`icosahedron` không có `expected/`
   (chỉ có hình vẽ trong bài báo (hiện thực tham khảo)).
-- `kiem_chung.py`: kiểm chứng chéo hai cách độc lập — Dijkstra 1-skeleton (cận trên của đường ngắn nhất)
-  và trải mặt phẳng (geodesic = đoạn thẳng) — mọi `input/*.geom`, chạy không cần thư viện ngoài.
 - Bề mặt mở: `dome` (lồi, biên), `terrain` (địa hình có lõm) — mọi đỉnh tới được từ `s`;
   `terrain` nguồn giữa mesh khớp distance trong lỗi làm tròn.
 - `run.py` đã bỏ (gộp toàn bộ vào `funnel_tree.py` / `funnel_paths.py`).
