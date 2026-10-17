@@ -296,12 +296,12 @@ def funnel_tree(mesh: Mesh, s: int, clip: ClipFn | None = None) -> Tree:
     (3)-(6), clip (Thủ tục 2) và cấu trúc đánh dấu ∠pvw không đổi.
 
     clip: hook nối Thủ tục 2. Được gọi khi một ∠pvq đã bị chiếm bởi funnel khác
-          (f la F_{p,q,S} hien tai, other la F_{p,q,S1} da chiem):
+          (f là F_{p,q,S} hiện tại, other là F_{p,q,S1} đã chiếm):
               clip(mesh, f, other, p, q, v)
-          Tra ve cac con can xoa, ghi bang chuoi:
-              "A-left", "A-right"  -> con trai/phai cua f
-              "B-left", "B-right"  -> con trai/phai cua other
-          (xem funnel_ de noi truc tiep Thủ tục 2).
+          Trả về các con cần xóa, ghi bằng chuỗi:
+              "A-left", "A-right"  -> con trái/phải của f
+              "B-left", "B-right"  -> con trái/phải của other
+          (xem funnel_clip_glue để nối trực tiếp Thủ tục 2).
     """
     tree = Tree()
     tree.best = [math.inf] * len(mesh.points)
@@ -440,8 +440,8 @@ def _expand(mesh: Mesh, f: Funnel, out: list[Funnel], tree: Tree,
                     if c in out:
                         out.remove(c)
 
-        # ponytail: neu con cua `other` da duoc mo rong (other o tang truoc),
-        # cay con cua no khong bi cat; can cay lai neu gap mesh lon.
+        # Chú ý: nếu con của `other` đã được mở rộng (other ở tầng trước),
+        # cây con của nó không bị cắt; cần cây lại nếu gặp mesh lớn.
         if not child_left.deleted:
             out.append(child_left)
         if not child_right.deleted:

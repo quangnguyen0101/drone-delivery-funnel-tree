@@ -27,11 +27,13 @@ INF = math.inf
 
 
 def _angle3(ab2: float, bc2: float, ca2: float) -> float:
+    """Góc ∠abc qua ba bình phương cạnh (ab2=|ab|², bc2=|bc|², ca2=|ca|²)."""
     cos = (ab2 + bc2 - ca2) / (math.sqrt(ab2 * bc2) * 2)
     return 0.0 if cos >= 1 else math.pi if cos <= -1 else math.acos(cos)
 
 
 def _cal_pv2(pqv: float, pq2: float, qv2: float) -> float:
+    """|pv|² qua định luật cos: pqv = ∠pqv (góc tại q), pq2 = |pq|², qv2 = |qv|²."""
     return pq2 + qv2 - math.sqrt(pq2 * qv2) * math.cos(pqv) * 2
 
 
@@ -41,6 +43,17 @@ def _d2(mesh: Mesh, a: int, b: int) -> float:
 
 @dataclass
 class Funnel:
+    """Nút funnel cho bước dựng path (khác funnel_tree.Funnel ở chỗ dùng
+    sequence (tên cũ của S) và thêm asp để theo dõi góc khi trải phẳng).
+
+    p, q : hai đầu miệng funnel
+    x    : đỉnh đang xét, kề q (ban đầu x = p)
+    a    : điểm neo khi trải phẳng (unfold)
+    sequence: các mặt từ cusp tới miệng funnel (dãy tam giác liên tiếp)
+    sp2, pq2: bình phương |sp|, |pq|
+    spq, psw, pqv: các góc ∠spq, ∠psq, ∠pqv
+    asp  : góc tích luỹ khi unfold (angle s-p-asp)
+    """
     p: int
     q: int
     x: int
@@ -52,7 +65,7 @@ class Funnel:
 
 
 def sub_funnel_tree(mesh: Mesh, s: int) -> list[list[Funnel]]:
-    """Cây funnel gốc s theo từng tầng (không có Thủ tục 2, giống )."""
+    """Cây funnel gốc s theo từng tầng (bản rút gọn: không có Thủ tục 2)."""
     tree: list[list[Funnel]] = []
     root: list[Funnel] = []
 
@@ -117,6 +130,12 @@ class PathInfo:
 
 def _generate_path_info(mesh: Mesh, s0: int,
                         trees: list) -> list[PathInfo]:
+    """Sinh funnel tree gốc s0 rồi trả về PathInfo cho mỗi đỉnh.
+
+    Với mỗi đỉnh v, ghi nhớ total_length (độ dài đường ngắn nhất s0->v) và
+    curr_funnel (funnel cuối cùng chứa v) để dựng polyline sau đó.
+    trees: danh sách cây đã sinh (append thêm cây mới vào đây).
+    """
     trees.append(sub_funnel_tree(mesh, s0))
     infos = [PathInfo(INF, None, s0) for _ in mesh.points]
     infos[s0].total_length = 0.0
