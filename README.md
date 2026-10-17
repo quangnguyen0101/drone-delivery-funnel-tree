@@ -16,7 +16,7 @@ Hai nhánh công việc:
 | `funnel_tree.py` | `Mesh` + `shortest_distances` (Thuật toán 1 + Thủ tục 2 — tính khoảng cách ngắn nhất), đọc `.geom` (`read_geom`), bảng nguồn `SOURCES` |
 | `funnel_paths.py` | Hiện thực truy hồi polyline theo thuật toán Funnel Tree (theo bài báo) |
 | `funnel_clip.py` | Thủ tục 2 (*Clip off Funnels*) |
-| `funnel_clip_glue.py` | `clip_with_procedure2` — nối Thủ tục 2 vào Algorithm 1 |
+| `funnel_clip_glue.py` | `clip_with_funnel_clip` — nối Thủ tục 2 vào Algorithm 1 |
 | `view_geom.py` | Xem mesh 3D + chồng lớp đường đi (Tk hoặc PNG) |
 | `input/` | 9 mesh `.geom` (+ `city.glb`) |
 | `expected/` | Output tham chiếu (cho `J17, L, cliff, demo_mesh, star`) |
