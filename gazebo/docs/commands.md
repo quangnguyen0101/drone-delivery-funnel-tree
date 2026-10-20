@@ -7,7 +7,12 @@ gzserver /root/worlds/empty.world
 
 ## Liệt kê model trong world
 ```bash
-gz model --list
+gz model -l
+```
+
+## Xem chi tiết một model
+```bash
+gz model -m ground_plane -i
 ```
 
 ## Liệt kê topic đang phát
