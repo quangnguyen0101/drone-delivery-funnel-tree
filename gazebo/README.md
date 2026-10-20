@@ -1,64 +1,98 @@
-# Gazebo Docker (học Docker + Gazebo)
+# Gazebo Sample Project
 
-Folder này chứa ví dụ chạy **Gazebo server (gzserver)** trong Docker, dùng để học tập. Không liên quan đến PX4 hay MAVSDK.
+Dự án mẫu để học **Gazebo + Docker**. Mục tiêu: bạn có thể chạy, quan sát, và sửa thử để hiểu Gazebo hoạt động như thế nào.
 
 ## Cấu trúc
 
 ```
 gazebo/
-├── Dockerfile      # build image từ gazebo:gzserver8
-├── world.sdf       # world mẫu (mặt đất + hộp)
-└── README.md       # file này
+├── Dockerfile              # Build image từ gazebo:gzserver8
+├── entrypoint.sh           # Script khởi động container
+├── README.md               # Tài liệu hướng dẫn (file này)
+├── worlds/                 # Các file world (.sdf)
+│   ├── empty.world         # Trống trơn (chỉ mặt đất + ánh sáng)
+│   ├── obstacles.world     # Có các vật cản (hộp, cầu)
+│   └── drone_landing.world # Mô phỏng sân bay hạ cánh đơn giản
+├── models/                 # Các model tùy chỉnh
+│   └── simple_box/         # Hộp đơn giản
+│       ├── model.config
+│       └── model.sdf
+├── scripts/                # Script hỗ trợ
+│   └── spawn_box.py        # Script PythonDrop hộp vào world bằng API
+└── docs/                   # Tài liệu bổ sung
+    └── commands.md         # Lệnh Gazebo thường dùng
 ```
 
-## Build image
+## Cách build image
 
 ```bash
 cd src/my/gazebo
-docker build -t my-gazebo-app .
+docker build -t gazebo-sample .
 ```
 
-## Chạy container
+## Cách chạy
 
-### Chạy nền (khuyên dùng)
-
+### Chạy world trống (mặc định)
 ```bash
-docker run -d --name gazebo-app my-gazebo-app
+docker run -d --name gazebo-sample gazebo-sample
+```
+
+### Chạy world có vật cản
+```bash
+docker run -d --name gazebo-sample gazebo-sample /root/worlds/obstacles.world
 ```
 
 ### Chạy tương tác (xem log trực tiếp)
-
 ```bash
-docker run --name gazebo-app my-gazebo-app
-```
-
-### Chạy với world file khác
-
-```bash
-docker run --name gazebo-app my-gazebo-app gzserver /root/world.sdf
+docker run --name gazebo-sample gazebo-sample /root/worlds/empty.world
 ```
 
 ## Kiểm tra container đang chạy
 
 ```bash
-docker ps --filter name=gazebo-app --format "{{.Status}} {{.Names}}"
+docker ps --filter name=gazebo-sample
 ```
 
-## Xem log
+## Xem log Gazebo
 
 ```bash
 docker logs gazebo-app
 ```
 
-## Dừng và xoá container
+## Vào container để thao tác trực tiếp
 
 ```bash
-docker stop gazebo-app
-docker rm gazebo-app
+docker exec -it gazebo-sample bash
 ```
 
-## Ghi nhớ
+Bên trong container, bạn có thể chạy:
+- `gzserver /root/worlds/empty.world` — chạy world
+- `gz model --list` — liệt kê model
+- `gz topic -l` — liệt kê topic đang phát
 
-- `gazebo:gzserver8` chỉ cài Gazebo server, không có giao diện GUI.
-- Nếu muốn dùng Gazebo với giao diện, hãy dùng image `gazebo:gzsim` hoặc cài thêm `gz-sim`.
-- Không cần PX4/MAVSDK cho mục đích học Gazebo này.
+## Dừng và xoá
+
+```bash
+docker stop gazebo-sample
+docker rm gazebo-sample
+```
+
+## Các file quan trọng giải thích
+
+| File | Mục đích |
+|------|----------|
+| `Dockerfile` | Xây dựng image Gazebo, copy worlds và models vào |
+| `entrypoint.sh` | Chạy khi container khởi động, chọn world mặc định |
+| `worlds/empty.world` | World đơn giản nhất: mặt đất + mặt trời |
+| `worlds/obstacles.world` | World có hộp và cầu để quan sát va chạm |
+| `models/simple_box/` | Định nghĩa model hộp tùy chỉnh |
+| `scripts/spawn_box.py` | Ví dụ dùng Python để spawn model vào Gazebo |
+
+## Tùy chỉnh world
+
+Sửa file `worlds/empty.world` để:
+- Thay đổi màu nền (`<ambient>` trong `<scene>`)
+- Thêm ánh sáng khác (`<light>`)
+- Thêm model khác vào `<world>`
+
+Sau khi sửa, rebuild image và chạy lại container.
