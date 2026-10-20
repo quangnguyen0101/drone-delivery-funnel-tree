@@ -56,7 +56,7 @@ docker ps --filter name=gazebo-sample
 ## Xem log Gazebo
 
 ```bash
-docker logs gazebo-app
+docker logs gazebo-sample
 ```
 
 ## Vào container để thao tác trực tiếp
